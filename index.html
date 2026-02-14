@@ -171,7 +171,7 @@
             fill="#ff7aa2"/>
     </svg>
 
-    <h1>Emma My love will you be my valentine?</h1>
+    <h1>Amber will you be my valentine?</h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
@@ -191,14 +191,33 @@
     </section>
   </main>
 
-  <script>
+<script>
+    /* 🎨 DOM ELEMENTS */
     const zone = document.getElementById("zone");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
 
-    /* ---------- CONFETTI ---------- */
+    /* 💔 NO BUTTON MESSAGES (The list you requested) */
+    const messages = [
+      "nice try",
+      "sorry not possible",
+      "maybe never",
+      "no thanks!",
+      "okay stop",
+      "I thought you loved me"
+    ];
+    let messageIndex = 0;
+
+    /* 🔄 FUNCTION TO CYCLE MESSAGES */
+    function updateNoButtonText() {
+      noBtn.innerText = messages[messageIndex];
+      // This math operator (%) makes it loop back to 0 when it reaches the end! 
+      messageIndex = (messageIndex + 1) % messages.length;
+    }
+
+    /* 🎉 CONFETTI SETUP */
     const confettiCanvas = document.getElementById("confettiCanvas");
 
     function resizeConfettiCanvas() {
@@ -243,14 +262,14 @@
       }, 300);
     }
 
-    /* ---------- YES BUTTON GROWS ---------- */
+    /* 📈 YES BUTTON GROWS */
     let yesScale = 1;
     function growYes() {
       yesScale = Math.min(2.2, yesScale + 0.1);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
 
-    /* ---------- NO BUTTON RUNS AWAY ---------- */
+    /* 🏃‍♂️ NO BUTTON RUNS AWAY */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
@@ -276,6 +295,9 @@
       noBtn.style.transform = "none";
 
       growYes();
+      
+      /* 🗣️ CHANGE TEXT WHEN IT RUNS */
+      updateNoButtonText();
     }
 
     zone.addEventListener("pointermove", e => {
@@ -287,9 +309,14 @@
       if (d < 140) moveNo(e.clientX, e.clientY);
     });
 
-    noBtn.addEventListener("click", e => e.preventDefault());
+    noBtn.addEventListener("click", e => {
+      e.preventDefault();
+      /* 🗣️ ALSO CHANGE TEXT ON CLICK (Just in case) */
+      updateNoButtonText(); 
+      growYes();
+    });
 
-    /* ---------- YES CLICK ---------- */
+    /* 💖 YES CLICK EVENT */
     yesBtn.addEventListener("click", () => {
       zone.style.display = "none";
       hint.style.display = "none";     // HIDE THE HINT
@@ -300,4 +327,3 @@
   </script>
 </body>
 </html>
-
